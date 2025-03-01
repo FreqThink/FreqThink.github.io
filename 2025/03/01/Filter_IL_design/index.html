@@ -272,8 +272,12 @@
 <p>可以计算得到输入端口处的电压反射系数为：<br>$$<br>\Gamma&#x3D;\frac{Z_{in}-1}{Z_{in}+1}<br>$$<br>此外，功率损耗比与电压反射系数之间具有以下关系<br>$$<br>P_{LR}&#x3D;\frac{1}{1-|\Gamma|^2}<br>$$</p>
 <p>根据这个公式建立了插入损耗与低通滤波器原型的元件值之间的关系。而 ButterWorth 低通滤波器和 Chebysheve 低通滤波器对应的$P_{LR}$已经在节 2.2.1 和节 2.2.2 中给出。因此，低通滤波器原型的各个元件值可以根据期望的插入损耗计算出来。</p>
 <h2 id="三-Chebysheve-低通滤波器原型元件值（matlab）"><a href="#三-Chebysheve-低通滤波器原型元件值（matlab）" class="headerlink" title="三. Chebysheve 低通滤波器原型元件值（matlab）"></a>三. Chebysheve 低通滤波器原型元件值（matlab）</h2><h2 id="3-1-计算公式"><a href="#3-1-计算公式" class="headerlink" title="3.1 计算公式"></a>3.1 计算公式</h2><p>Chebysheve 低通滤波器的插入损耗为：<br>$$<br>IL \text{ [dB]}&#x3D;10 \lg (1+k^2T_n^2(\omega’))<br>$$<br>其中$\omega’&#x3D;\omega&#x2F;\omega_c$，$n$为滤波器的阶数<br>$$<br>T_N(\omega’)&#x3D;cos(N(arccos(\omega’))),\omega’ \le 1 \\<br>T_N(\omega’)&#x3D;cosh(N(arccosh(\omega’))),\omega’ \ge 1<br>$$<br>下图展示了（a）并联元件和（b）串联元件开始的低通滤波器原型：</p>
-<p><img src="/2025/03/01/Filter_IL_design/Figure3.jpg" alt="img"></p>
-<p>对于上图展示的两种双端口网络，其各个元件值可以使用下列公式进行计算<br>$$<br>g_0&#x3D;1\\<br>g_1&#x3D;\frac{2}{\gamma}\sin\left(\frac{\pi}{2n}\right)\\<br>g_i&#x3D;\frac{1}{g_i-1}\frac{4\sin\left[\frac{(2i-1)\pi}{2n}\right]\sin\left[\frac{(2i-3)\pi}{2n}\right]}{\gamma^2+\sin^2\left[\frac{(i-1)\pi}{n}\right]}\text{ for } i&#x3D;2,3,…,n\\<br>g_{n+1}&#x3D;<br>\begin{cases}<br>1&amp; \text{for }n \text { odd}\\<br>\coth^2\left(\frac{\beta}{4}\right)&amp; \text{for }n \text { even}<br>\end{cases}<br>$$<br>其中，<br>$$<br>\beta&#x3D;\ln\left[\coth\left(\frac{L_{Ar}}{17.37}\right)\right]\\<br>\gamma&#x3D;\sinh\left(\frac{\beta}{2n}\right)<br>$$<br>其中$L_{Ar}$是滤波器的通带波纹（单位：dB）。假设所需的滤波器在$\omega’&#x3D;\omega’<em>s$处的阻带衰减大于$L</em>{As}$dB，则<br>$$<br>n \ge \frac{\cosh^{-1}\sqrt{\frac{10^{0.1L_{As}}-1}{10^{0.1L_{Ar}}-1}}}{\cosh^{-1}\omega’<em>s}<br>$$<br>$n$是滤波器的阶数，也是滤波器原型电路的元件数，必须为整数。有时，我们给定的是通带内的最小回波损耗$L_R$或者通带内的最大电压驻波比VSWR，而不是通带波纹，则通带波纹可以通过下式进行计算<br>$$<br>L</em>{Ar}&#x3D;-10\log\left(1-10^{0.1L_{R}}\right)\text{ dB}\\<br>L_{Ar}&#x3D;-10\log\left[1-\left(\frac{VSWR-1}{VSWR+1}\right)^2\right]\text{ dB}<br>$$<br>据此我们可根据以下输入得到滤波器原型的各个元件值。</p>
+<p><img src="/2025/03/01/Filter_IL_design/Figure3.JPG" alt="img"></p>
+<p>对于上图展示的两种双端口网络，其各个元件值可以使用下列公式进行计算</p>
+<p>$$<br>g_0&#x3D;1\\<br>g_1&#x3D;\frac{2}{\gamma}\sin\left(\frac{\pi}{2n}\right)\\<br>g_i&#x3D;\frac{1}{g_i-1}\frac{4\sin\left[\frac{(2i-1)\pi}{2n}\right]\sin\left[\frac{(2i-3)\pi}{2n}\right]}{\gamma^2+\sin^2\left[\frac{(i-1)\pi}{n}\right]}\text{ for } i&#x3D;2,3,…,n\\<br>g_{n+1}&#x3D;<br>\begin{cases}<br>1&amp; \text{for }n \text { odd}\\<br>\coth^2\left(\frac{\beta}{4}\right)&amp; \text{for }n \text { even}<br>\end{cases}<br>$$<br>其中，<br>$$<br>\beta&#x3D;\ln\left[\coth\left(\frac{L_{Ar}}{17.37}\right)\right]\\<br>\gamma&#x3D;\sinh\left(\frac{\beta}{2n}\right)<br>$$</p>
+<p>其中$L_{Ar}$是滤波器的通带波纹（单位：dB）。假设所需的滤波器在$\omega’&#x3D;\omega_s’$处的阻带衰减大于$L_{As}$dB，则</p>
+<p>$$<br>n \ge \frac{\cosh^{-1}\sqrt{\frac{10^{0.1L_{As}}-1}{10^{0.1L_{Ar}}-1}}}{\cosh^{-1}\omega’_s}<br>$$</p>
+<p>$n$是滤波器的阶数，也是滤波器原型电路的元件数，必须为整数。有时，我们给定的是通带内的最小回波损耗$L_R$或者通带内的最大电压驻波比VSWR，而不是通带波纹，则通带波纹可以通过下式进行计算<br>$$<br>L_{Ar}&#x3D;-10\log\left(1-10^{0.1L_{R}}\right)\text{ dB}\\<br>L_{Ar}&#x3D;-10\log\left[1-\left(\frac{VSWR-1}{VSWR+1}\right)^2\right]\text{ dB}<br>$$<br>据此我们可根据以下输入得到滤波器原型的各个元件值。</p>
 <ul>
 <li>通带最大波纹 ：$L_{Ar}$</li>
 <li>通带最小回波损耗：$L_R$</li>
@@ -308,7 +312,7 @@
 <td align="center">1.7058</td>
 </tr>
 </tbody></table>
-<p><img src="/2025/03/01/Filter_IL_design/Figure4.png" alt="imag"></p>
+<p><img src="/2025/03/01/Filter_IL_design/Figure4.PNG" alt="imag"></p>
 <p>如图所示，得到的S21满足设计要求。</p>
 
         </div>
